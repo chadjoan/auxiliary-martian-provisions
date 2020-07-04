@@ -13,6 +13,7 @@ public:
 
 	@nogc void put(T elem)
 	{
+		TODO: either fix the formatter so that this works, or change the usage
 		if ( !impl.tryPut(elem) )
 			throw errorfmt!RangeError(
 				"Attempt to append one element to already-full appender with capacity ",
@@ -23,6 +24,7 @@ public:
 	{
 		size_t startLength = impl.length;
 		size_t nTruncated = impl.attemptPut(elems);
+		TODO: either fix the formatter so that this works, or change the usage
 		if ( nTruncated )
 			throw errorfmt!RangeError(
 				"Attempt to append ", elems.length, " elements into appender with ",
