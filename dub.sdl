@@ -1,0 +1,34 @@
+name "auxiliary-martian-provisions"
+description "A library providing useful constructs intended to complement and build upon what is offered in Phobos."
+authors "Chad Joan"
+copyright "Copyright © 2020, Chad Joan"
+license "Boost"
+
+configuration "library" {
+	targetType "library"
+	targetPath "lib/"
+}
+
+/*
+configuration "example" {
+	targetType "executable"
+	targetPath "bin/"
+	targetName "example"
+	buildOptions "debugMode" "debugInfo"
+	sourcePaths "example/" "tests/"
+	importPaths "example/" "tests/"
+	excludedSourceFiles "tests/main.d"
+}
+*/
+
+/* The "unittest" configuration is a special configuration that is used
+** when "dub test" is invoked on the command line.
+*/
+configuration "unittest" {
+	targetType "executable"
+	targetPath "bin/"
+	targetName "unittests_main"
+	buildOptions "unittests"
+	sourcePaths "tests/"
+	importPaths "tests/"
+}
