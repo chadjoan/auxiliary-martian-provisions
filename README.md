@@ -23,9 +23,9 @@ versions of functions are also provided whenever it isn't entirely unwieldy.
 
 ### @nogc Exceptions
 
-This library also features a work-in-progress attempt at @nogc exceptions.
+This library also features a work-in-progress attempt at `@nogc` exceptions.
 Depending on the current state of druntime+phobos, this may require
-druntime+phobos modification to be truly @nogc (for incidental but potentially
+druntime+phobos modification to be truly `@nogc` (for incidental but potentially
 thorny reasons).
 
 The `@nogc` exception implementation hinges upon these techniques:
@@ -102,7 +102,7 @@ no value was found?  `-1`?  `ptrdiff_t.max`?  `text_body.length`?
 Unfortunately, all of those have a boolean equivalence of `true`,
 which is an odd thing to receive for a negative result!
 
-Indeed, we end up with nonesense like this:
+Indeed, we end up with nonsense like this:
 ```D
 unittest
 {
@@ -117,8 +117,8 @@ unittest
 ```
 
 If we want to return something with `false` equivalence when the search
-fails, then we'd be compelled to return 0. That is a bad idea, however,
-because 0 would also indicate that the first character in `text_body`
+fails, then we'd be compelled to return `0`. That is a bad idea, however,
+because `0` would also indicate that the first character in `text_body`
 was equivalent to `to_find`, a very different conclusion from
 "nothing matched".
 
@@ -161,7 +161,7 @@ It just sucks and might cause errors.
 
 There HAS to be a better way.
 
-Behold, the index type:
+Behold, the `index` type:
 ```D
 import exogear.types : index;
 
@@ -296,7 +296,7 @@ It would make sense, then, to choose our `true` and `false` to correlate
 with valid and invalid indices, respectively. And that is exactly what
 the `index` type does.
 
-This truth table illustrates the boolean equivalence for both `index` and
+This table illustrates the boolean equivalence for both `index` and
 for all other native D (C-style) integers:
 
 |  type       |       `true` values             | `false` values |
@@ -327,7 +327,7 @@ haunt us with [visions of (Xerox PARC) Mesa programmers struggling to manage
 
 Exogear diverges from the traditional D style guide in terms of variable,
 constant, function, and template naming by employing *snake_case* instead
-of CamelCase when naming these entities.
+of *CamelCase* when naming these entities.
 
 Also, acronyms, abbreviations, and initialisms are treated as full words
 when CamelCasing type names. Thus, when writing an acronym in a type name,
@@ -369,7 +369,7 @@ struct WrapperForXml { ... }
 This represents a balanced strategy: *snake_case* ends up used for the majority
 of identifiers, which makes it easy and painless to deal with names that
 contain acronyms, abbreviations, and initialisms (as these are very common
-in software technology, among other contexts). On the other hand, CamelCase
+in software technology, among other contexts). On the other hand, *CamelCase*
 is still used for type names because it provides good visual contrast when
 type identifiers appear next to function or variable identifiers, a situation
 that occurs *very* frequently!
@@ -389,7 +389,7 @@ scuba_diver_but_better driver_for_butter_scoops()
 ```
 
 Given that space and underscore are not very distinguishable in such
-situations, the CamelCase type names allow us to ensure that there can
+situations, the *CamelCase* type names allow us to ensure that there can
 be at most one space or underscore at the ends of *snake_case* identifiers,
 as they are otherwise bordered by D's punctuation (special characters
 like parentheses or semicolons). Thus the above mess becomes a little bit
@@ -407,7 +407,7 @@ ScubaDiverButBetter driver_for_butter_scoops()
 This does mean that acronyms in type names can still give us headaches.
 However, since type names always begin with an uppercase letter, we can
 make identical acronyms be also visually identical, and at all times
-(within CamelCase). In type names, an acronym's first letter is *always*
+(within *CamelCase*). In type names, an acronym's first letter is *always*
 capitalized and its remaining letters are *always* lowercase. This decision
 is also important for making it easier to tell where acronyms begin and end
 when they are placed adjacent to each other in a type name. This leads to
