@@ -1,4 +1,4 @@
-module amp.algorithm.mutation;
+module exogear.algorithm.mutation;
 
 import std.traits : isArray;
 //import std.algorithm.mutation : areCopyCompatibleArrays;

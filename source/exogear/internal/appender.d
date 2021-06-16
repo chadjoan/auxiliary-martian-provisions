@@ -1,4 +1,4 @@
-module amp.internal.appender;
+module exogear.internal.appender;
 
 import std.traits : hasIndirections;
 /// Determines if the given buffer type (BufferT) is appropriate for storing
@@ -31,7 +31,7 @@ enum isValidBufferTypeFor(BufferT, ElemT) =
 			)
 		);
 
-/// This is the underlying implementation for amp.appender.
+/// This is the underlying implementation for `exogear.appender`.
 /// It does not provide a 'put' function and is thus not an OutputRange.
 /// Instead, it provides 'attemptPut' and 'tryPut' functions that are nothrow
 /// and instead use return values to indicate success or failure. This is
@@ -40,10 +40,10 @@ enum isValidBufferTypeFor(BufferT, ElemT) =
 /// If the caller really needs a 'put' function, use a FeedbackBufferedAppender
 /// instead. That appender is derived from this one, but offers a callback
 /// mechanism to handle overflow.
-/// This appender can also be used in modules that the amp.appender
+/// This appender can also be used in modules that the `exogear.appender`
 /// module depends on, thus breaking dependency cycles. The original motivator
-/// was to prevent a dependency cycle between amp.exception and
-/// amp.appender.
+/// was to prevent a dependency cycle between `exogear.exception` and
+/// `exogear.appender`.
 struct BasicBufferedAppender(T)
 {
 private:
@@ -190,7 +190,7 @@ public:
 		else
 		{
 			// The copying case.
-			import amp.algorithm.mutation : truncatingCopy;
+			import exogear.algorithm.mutation : truncatingCopy;
 
 			// Calculate the copy size.
 			// This will become very useful for multiple reasons.

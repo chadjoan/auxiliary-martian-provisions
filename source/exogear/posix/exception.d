@@ -1,4 +1,4 @@
-module amp.posix.exception;
+module exogear.posix.exception;
 
 class PosixException : Exception
 {
@@ -66,7 +66,7 @@ class PosixException : Exception
 	private string unknownError(int errnum, char[] buffer)
 	{
 		import std.exception : assumeUnique;
-		import amp.conv;
+		import exogear.conv;
 
 		string prefix = "Unknown error";
 		size_t pos = 0;

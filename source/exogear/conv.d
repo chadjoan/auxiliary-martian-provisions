@@ -1,10 +1,10 @@
-module amp.conv;
+module exogear.conv;
 
 public:
 
 import std.traits : isIntegral, isSigned, Unsigned;
 
-import amp.types;
+import exogear.types;
 
 @safe:
 
@@ -21,7 +21,7 @@ import amp.types;
 	// Find out how many "digits" would be required to represent UIntT
 	// by exponentiating the base until it overflows. Once it overflows,
 	// that's the number we need.
-	import amp.bits;
+	import exogear.bits;
 	UIntT largest = 1;
 	auto multRes = multiply(largest, base);
 	largest = multRes.lo;

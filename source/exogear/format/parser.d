@@ -241,7 +241,7 @@ index scanByteOneAtATimeUntil(ubyte toMatch)(const(ubyte)[] text)
 /// Returns: an index into 'text' where the match was found, or false
 ///   (defined by the 'index' type as any negative non-zero value)
 ///   if the match was not found.
-private pure /*@nogc*/ // TODO: std.utf.decode is probably not @nogc because of the UTFException. It can be fixed with amp.exception.
+private pure /*@nogc*/ // TODO: std.utf.decode is probably not @nogc because of the UTFException. It can be fixed with exogear.exception.
 index scanUnicodeOneAtATimeUntil(dchar toMatch, Char)(const(Char)[] text)
 {
 	static assert(0, "Sorry, not implemented.");

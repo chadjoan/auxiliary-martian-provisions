@@ -1,11 +1,11 @@
-module amp.appender;
+module exogear.appender;
 
 /// This is similar to std.array.Appender, but with an API and implementation
 /// that allows it to be @nogc.
 struct StrictBufferedAppender(T)
 {
 private:
-	import amp.internal.appender;
+	import exogear.internal.appender;
 	FeedbackBufferedAppender!T  impl;
 
 public:

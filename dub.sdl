@@ -1,4 +1,4 @@
-name "auxiliary-martian-provisions"
+name "exogear"
 description "A library providing useful constructs intended to complement and build upon what is offered in Phobos."
 authors "Chad Joan"
 copyright "Copyright © 2020, Chad Joan"

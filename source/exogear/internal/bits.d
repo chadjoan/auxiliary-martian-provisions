@@ -1,7 +1,7 @@
-module amp.bits;
+module exogear.bits;
 
 import std.traits;
-import amp.types;
+import exogear.types;
 
 /// Collection of useful constants for an integer type.
 template IntegerProperties(IntT)

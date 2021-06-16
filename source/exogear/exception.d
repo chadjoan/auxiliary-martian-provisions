@@ -15,16 +15,16 @@
 /// * When an exception is created by this module, it can only be guaranteed
 ///     that the exception object itself, as well as any error message
 ///     copied or formatted by this module, will be emplaced in pre-allocated
-///     memory. In other words, `amp.exception` can only comprehensively
+///     memory. In other words, `exogear.exception` can only comprehensively
 ///     allocate memory for Exceptions that are shallow in nature.
 ///     It is possible that an object inherited from Exception will allocate
-///     other things (e.g. in its constructor), and the `amp.exceptions` module
-///     currently has no way to know about, fulfill, or anticipate such
+///     other things (e.g. in its constructor), and the `exogear.exceptions`
+///     module currently has no way to know about, fulfill, or anticipate such
 ///     allocations. It is the caller's responsibility to manage any such
 ///     memory. If the caller needs to prevent such allocations from happening
 ///     while a problematic Exception class cannot be modified, then this
 ///     would need to be handled by implementing an equivalent Exception
-///     class that does not perform out-of-band GC allocations. `amp.exception`
+///     class that does not perform out-of-band GC allocations. `exogear.exception`
 ///     would then be able to instantiate the replacement class without
 ///     issue.
 ///
@@ -52,11 +52,11 @@
 /// cause a non-gc exception memory expansion or allow existing
 /// non-gc'd exceptions to be moved into gc memory.
 ///
-module amp.exception;
+module exogear.exception;
 
 import std.experimental.allocator : IAllocator;
 
-import amp.internal.appender;
+import exogear.internal.appender;
 
 public:
 /// The exception memory preallocation size is how much memory is allocated at
@@ -401,7 +401,7 @@ private @nogc nothrow void reallocateExceptionMemoryWithoutGcRangeAwareness(size
 
 	if ( .exceptionMemoryInUse > 0 )
 	{
-		import amp.algorithm.mutation : copy;
+		import exogear.algorithm.mutation : copy;
 		void[] newMemory = allocate(.exceptionMemoryAllocator_, newSize);
 
 		copy(.exceptionMemory[0 .. ememCursor], newMemory);
@@ -425,34 +425,34 @@ private @nogc nothrow void reallocateExceptionMemoryWithoutGcRangeAwareness(size
 	return .ememCursor;
 }
 
-/// Ensures that the calling thread's `amp.exceptions` module is in a 'ready'
+/// Ensures that the calling thread's `exogear.exceptions` module is in a 'ready'
 /// state. This means that it is able to create exceptions at any time without
 /// performing a memory allocation (e.g. it is able to avoid using the malloc
 /// heap, or whatever allocator has been assigned with
-/// `amp.exceptions.exceptionMemoryAllocator`).
+/// `exogear.exceptions.exceptionMemoryAllocator`).
 ///
 /// More specifically, this function causes the calling thread's exception
 /// pre-allocator to check for whether or not it currently possesses any unused
 /// (ready) memory. If there is no such memory, then it will immediately
 /// allocate a new block of memory to ensure that there will be memory ready
-/// in advance of the next creation of an (`amp.exception`) exception.
+/// in advance of the next creation of an (`exogear.exception`) exception.
 ///
 /// Any new thread (including the main thread) will always begin in a ready
 /// state, so it is not (normally) necessary to call this from within
 /// initialization code. Rather, this function only needs to be called if
 /// an Exception (of any type) thrown by this module will be persisted
-/// by the caller beyond the use of another (`amp.exception` allocated)
+/// by the caller beyond the use of another (`exogear.exception` allocated)
 /// Exception object, AND the persisted Exception did not have its allocation
-/// firmed by either calling `amp.exception.allocate` or `amp.exception.claim`.
+/// firmed by either calling `exogear.exception.allocate` or `exogear.exception.claim`.
 ///
 /// In other words, as long as the following conditions are met:
-/// - An Exception was created by calling functions in `amp.exceptions`
+/// - An Exception was created by calling functions in `exogear.exceptions`
 /// - That exception was thrown
-/// - The `amp.exception.allocate(exception)` and `amp.exception.claim(exception)`
+/// - The `exogear.exception.allocate(exception)` and `exogear.exception.claim(exception)`
 ///     functions were NOT (and will not be) called.
 /// - That exception could have a long lifespan, meaning that it may still
-///     be residing in the `amp.exception` module's memory when another
-///     exception is created, and `amp.exception.discard(exception)` might
+///     be residing in the `exogear.exception` module's memory when another
+///     exception is created, and `exogear.exception.discard(exception)` might
 ///     not be called until after that.
 /// ... then `ensureReadiness` should be called.
 ///

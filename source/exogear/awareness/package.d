@@ -20,7 +20,7 @@
 /// each SharedFreelist will keep a minimum of `sqrt(n)` blocks reserved
 /// in the SharedFreelist.
 ///
-module amp.exception.package;
+module exogear.awareness.package;
 
 
 

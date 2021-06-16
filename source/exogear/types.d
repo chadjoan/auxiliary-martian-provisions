@@ -1,5 +1,5 @@
 /// Types that SHOULD be built-ins, but aren't.
-module amp.types;
+module exogear.types;
 
 alias uint8  = ubyte;  /// 8-bit unsigned integer. D's ubyte.
 alias uint16 = ushort; /// 16-bit unsigned integer. D's ushort.
