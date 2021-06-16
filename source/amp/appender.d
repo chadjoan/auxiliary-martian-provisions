@@ -10,7 +10,7 @@ private:
 
 public:
 	alias impl this;
-
+/+
 	@nogc void put(T elem)
 	{
 		TODO: either fix the formatter so that this works, or change the usage
@@ -30,6 +30,7 @@ public:
 				"Attempt to append ", elems.length, " elements into appender with ",
 					startLength," of ",impl.capacity," elements already occupied.");
 	}
++/
 }
 
 /+ TODO:

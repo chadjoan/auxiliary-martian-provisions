@@ -6,6 +6,8 @@ import std.traits : isIntegral, isSigned, Unsigned;
 
 import amp.types;
 
+@safe:
+
 /// Call this before calling intToString if you are unsure of whether the
 /// buffer can hold the result or not.
 @nogc nothrow size_t bufferSizeForIntConversion(IntT, ubyte base)()
@@ -147,9 +149,9 @@ import amp.types;
 
 	char[32] stackMem;
 	char[] buffer = stackMem[0..$];
-	char[] intToDec(int x)    { .intToDec(x, buffer); }
-	char[] intToHex(int x)    { .intToHex(x, buffer); }
-	char[] intToBinary(int x) { .intToBinary(x, buffer); }
+	char[] intToDec(int x)    { return .intToDec(x, buffer); }
+	char[] intToHex(int x)    { return .intToHex(x, buffer); }
+	char[] intToBinary(int x) { return .intToBinary(x, buffer); }
 
 	writeln("");
 	writeln("Testing intToString(int,char[])");

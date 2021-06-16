@@ -1,8 +1,14 @@
 module amp.algorithm.mutation;
 
-import std.algorithm.mutation;
+import std.traits : isArray;
+//import std.algorithm.mutation : areCopyCompatibleArrays;
+// areCopyCompatibleArrays was made private, so we'll just copy the original source:
+///
+enum bool areCopyCompatibleArrays(T1, T2) =
+    isArray!T1 && isArray!T2 && is(typeof(T2.init[] = T1.init[]));
 
-public @nogc nothrow
+///
+public @nogc @safe nothrow
 size_t truncatingCopy
 	(SourceArrayT, DestArrayT)
 	(SourceArrayT src, DestArrayT dst)
@@ -45,7 +51,8 @@ size_t truncatingCopy
 	return nTruncated;
 }
 
-public @nogc nothrow
+///
+public @nogc @safe nothrow
 DestArrayT copy
 	(SourceArrayT, DestArrayT)
 	(SourceArrayT src, DestArrayT dst)
@@ -84,7 +91,7 @@ DestArrayT copy
 	return copy(src, dst, nToCopy);
 }
 
-private @nogc nothrow
+private @nogc @safe nothrow
 DestArrayT copy
 	(SourceArrayT, DestArrayT)
 	(SourceArrayT src, DestArrayT dst, size_t nToCopy)
@@ -94,6 +101,7 @@ DestArrayT copy
 	assert(dst !is null);
 	assert(src.length > 0);
 	assert(dst.length > 0);
+	assert(nToCopy > 0);
 	assert(src.ptr !is dst.ptr);
 
 	// The non-copying cases have now been excluded.
@@ -107,10 +115,21 @@ DestArrayT copy
 	// This gives the compiler the ability to avoid inlining that code,
 	// which should at least make the non-overlapping (common) case slightly faster.
 	// And it's more tidy.
-	if ( src.ptr < dst.ptr && dst.ptr < src.ptr + nToCopy )
+
+	// Note that unlike (src.ptr+nToCopy), &src[nToCopy-1] is inclusive.
+	// We have to do it this way to be @safe.
+	// The practical implication is that we have to use <= instead of < whenever
+	// comparing against these. This effectively allows us to add 1 to pointers
+	// without actually needing to add to pointers, which makes @safe happy.
+	auto srcLo = &src[0];
+	auto dstLo = &dst[0];
+	auto srcHi = &src[nToCopy-1];
+	auto dstHi = &dst[nToCopy-1]; 
+
+	if ( srcLo < dstLo && dstLo <= srcHi )
 		copyUp(src, dst, nToCopy);
 	else
-	if ( dst.ptr < src.ptr && src.ptr < dst.ptr + nToCopy )
+	if ( dstLo < srcLo && srcLo <= dstHi )
 		copyDown(src, dst, nToCopy);
 	else
 	{
@@ -123,7 +142,7 @@ DestArrayT copy
 	return dst[nToCopy .. $];
 }
 
-private @nogc nothrow
+private @nogc @safe nothrow
 void copyUp
 	(SourceArrayT, DestArrayT)
 	(SourceArrayT src, DestArrayT dst, size_t nToCopy)
@@ -153,7 +172,10 @@ void copyUp
 	//
 	// This optimization should work best on mostly-not-overlapping
 	// copies.
-	ptrdiff_t copyIncr = (dst.ptr /* + nToCopy */) - (src.ptr /* + nToCopy */);
+	auto dstPtr = &dst[0];
+	auto srcPtr = &src[0];
+
+	ptrdiff_t copyIncr = (dstPtr /* + nToCopy */) - (srcPtr /* + nToCopy */);
 	assert(copyIncr > 0);
 
 	ptrdiff_t copyLower = nToCopy - copyIncr;
@@ -170,7 +192,7 @@ void copyUp
 		dst[0 .. copyUpper] = src[0 .. copyUpper];
 }
 
-private @nogc nothrow
+private @nogc @safe nothrow
 void copyDown
 	(SourceArrayT, DestArrayT)
 	(SourceArrayT src, DestArrayT dst, size_t nToCopy)
@@ -204,7 +226,10 @@ void copyDown
 	//
 	// This optimization should work best on mostly-not-overlapping
 	// copies.
-	ptrdiff_t copyIncr = (src.ptr /* + nToCopy */) - (dst.ptr /* + nToCopy */);
+	auto dstPtr = &dst[0];
+	auto srcPtr = &src[0];
+
+	ptrdiff_t copyIncr = (srcPtr /* + nToCopy */) - (dstPtr /* + nToCopy */);
 	assert(copyIncr > 0);
 
 	size_t copyLower = 0;
@@ -233,6 +258,7 @@ void copyDown
     assert(rem.length == 10);   // unused slots in buf
 }
 
+/+ TODO: ranges n shit
 /**
 As long as the target range elements support assignment from source
 range elements, different types of ranges are accepted:
@@ -244,7 +270,6 @@ range elements, different types of ranges are accepted:
     src.copy(dest);
 }
 
-/+ TODO: ranges n shit
 /**
 To _copy at most `n` elements from a range, you may want to use
 $(REF take, std,range):
