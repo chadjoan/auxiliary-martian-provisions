@@ -299,12 +299,12 @@ the `index` type does.
 This truth table illustrates the boolean equivalence for both `index` and
 for all other native D (C-style) integers:
 
-|  type       |       `true` values           | `false` values |
-|-------------|-------------------------------|----------------|
-| `index`     |  `index.min+1 .. index.max`   |   `index.min`  |
-| `ptrdiff_t` | All `i` s.t. `i < 0 || i > 0` |       `0`      |
-| `size_t`    |     All `i` s.t. `i > 0`      |       `0`      |
-| `int`       | All `i` s.t. `i < 0 || i > 0` |       `0`      |
+|  type       |       `true` values             | `false` values |
+|-------------|---------------------------------|----------------|
+| `index`     |  `index.min+1 .. index.max`     |   `index.min`  |
+| `ptrdiff_t` | All `i` s.t. `i < 0 \|\| i > 0` |       `0`      |
+| `size_t`    |     All `i` s.t. `i > 0`        |       `0`      |
+| `int`       | All `i` s.t. `i < 0 \|\| i > 0` |       `0`      |
 
 Now we see that the `index` type has simply moved its `false` equivalence
 from `0` to `index.min`. Given that `index` is a signed integer obeying
@@ -330,7 +330,8 @@ constant, function, and template naming by employing *snake_case* instead
 of CamelCase when naming these entities.
 
 Also, acronyms, abbreviations, and initialisms are treated as full words
-when CamelCasing type names, and thus use lowercase letters following the
+when CamelCasing type names. Thus, when writing an acronym in a type name,
+always capitalize the first letter of the acronym, then lowercase all others.
 
 The below example provides some names that highlight or exaggerate differences
 in the traditional D style convention (as found in Phobos and DRuntime) and
